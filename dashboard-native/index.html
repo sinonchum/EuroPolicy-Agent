@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EuroPolicy Agent | AI Compliance</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons & Charts -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-light">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-top">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i data-lucide="shield-check"></i>
+                </div>
+                <div class="brand-info">
+                    <h1 class="brand-name">EuroPolicy</h1>
+                    <span class="brand-tag">Agent Engine</span>
+                </div>
+            </div>
+
+            <nav class="nav-groups">
+                <div class="nav-group">
+                    <button class="nav-item active" data-target="dashboard">
+                        <i data-lucide="layout-dashboard"></i>
+                        <span data-i18n="nav_dashboard">Dashboard</span>
+                    </button>
+                    <button class="nav-item" data-target="copilot">
+                        <i data-lucide="bot"></i>
+                        <span data-i18n="nav_copilot">Copilot</span>
+                    </button>
+                    <button class="nav-item" data-target="graph">
+                        <i data-lucide="network"></i>
+                        <span data-i18n="nav_graph">Knowledge Graph</span>
+                    </button>
+                    <button class="nav-item" data-target="settings">
+                        <i data-lucide="settings"></i>
+                        <span data-i18n="nav_settings">Settings</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+        <div class="sidebar-bottom">
+            <!-- Language Switcher -->
+            <div class="language-picker">
+                <i data-lucide="languages" class="lang-icon"></i>
+                <select id="langSelect">
+                    <option value="en">English</option>
+                    <option value="zh">简体中文</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                </select>
+            </div>
+
+            <div class="status-card">
+                <div class="pulse-container">
+                    <div class="pulse-dot"></div>
+                    <span data-i18n="status_online">System Live</span>
+                </div>
+                <div class="version-tag">Alpha v0.8.2</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content-area">
+        <header class="top-header">
+            <div class="search-bar">
+                <i data-lucide="search"></i>
+                <input type="text" data-i18n-placeholder="search_placeholder" placeholder="Search directives or articles...">
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn"><i data-lucide="bell"></i></button>
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="scroll-container">
+            <!-- Dashboard Page -->
+            <section id="dashboard" class="page active">
+                <div class="hero-section">
+                    <h2 class="hero-title" data-i18n="hero_title">Policy Intelligence<br>at a Glance</h2>
+                    <p class="hero-desc" data-i18n="hero_subtitle">Real-time monitoring of EU regulatory landscape across energy, carbon and trade policies.</p>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="glass-card metric-card animate-in" style="--delay: 0.1s">
+                        <div class="card-icon blue"><i data-lucide="file-text"></i></div>
+                        <div class="card-stats">
+                            <span class="label" data-i18n="metric_directives">Directives Tracked</span>
+                            <h3 class="value">1,204</h3>
+                            <div class="change-tag pos">+12.5%</div>
+                        </div>
+                    </div>
+                    <div class="glass-card metric-card animate-in" style="--delay: 0.2s">
+                        <div class="card-icon purple"><i data-lucide="share-2"></i></div>
+                        <div class="card-stats">
+                            <span class="label" data-i18n="metric_graph">Graph Relations</span>
+                            <h3 class="value">1.4M</h3>
+                            <div class="change-tag pos">Live</div>
+                        </div>
+                    </div>
+                    <div class="glass-card metric-card animate-in" style="--delay: 0.3s">
+                        <div class="card-icon orange"><i data-lucide="alert-circle"></i></div>
+                        <div class="card-stats">
+                            <span class="label" data-i18n="metric_obligations">Obligations</span>
+                            <h3 class="value">42</h3>
+                            <div class="change-tag neg">Critical</div>
+                        </div>
+                    </div>
+                    <div class="glass-card metric-card animate-in" style="--delay: 0.4s">
+                        <div class="card-icon green"><i data-lucide="shield-check"></i></div>
+                        <div class="card-stats">
+                            <span class="label" data-i18n="metric_risks">Risks Mitigated</span>
+                            <h3 class="value">7</h3>
+                            <div class="change-tag pos">Safe</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-layout-grid">
+                    <div class="glass-card chart-primary animate-in" style="--delay: 0.5s">
+                        <div class="card-header">
+                            <h3 data-i18n="heatmap_title">Industry Impact Heatmap</h3>
+                            <button class="icon-btn-small"><i data-lucide="maximize-2"></i></button>
+                        </div>
+                        <div id="heatmapContainer" class="chart-canvas"></div>
+                    </div>
+
+                    <div class="glass-card activity-sidebar animate-in" style="--delay: 0.6s">
+                        <div class="card-header">
+                            <h3 data-i18n="recent_title">Recent Alerts</h3>
+                        </div>
+                        <div class="activity-feed" id="activityFeed">
+                            <!-- Injected -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Copilot Page -->
+            <section id="copilot" class="page">
+                <div class="hero-section">
+                    <h2 class="hero-title" data-i18n="copilot_hero">Compliance Copilot</h2>
+                    <p class="hero-desc" data-i18n="copilot_subtitle">Natural language engine powered by LangGraph to synthesize risks and strategies.</p>
+                </div>
+
+                <div class="copilot-container">
+                    <div class="chat-interface glass-card">
+                        <div class="hint-strip">
+                            <div class="hint-label"><i data-lucide="sparkles"></i> <span data-i18n="copilot_hint_title">Suggested Queries</span></div>
+                            <div class="hint-items" id="hintItems">
+                                <!-- Injected -->
+                            </div>
+                        </div>
+                        <div class="input-wrapper">
+                            <textarea id="copilotQuery" data-i18n-placeholder="copilot_placeholder" placeholder="Ask about EU regulations..."></textarea>
+                            <button id="runBtn" class="action-btn">
+                                <i data-lucide="zap"></i>
+                                <span data-i18n="copilot_button">Analyze Scenario</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="analysisStage" class="analysis-stage hidden">
+                        <div class="stage-steps">
+                            <div class="step" id="step1">
+                                <span class="step-num">1</span>
+                                <span class="step-txt" data-i18n="copilot_step1">Knowledge Graph Retrieval</span>
+                            </div>
+                            <div class="step" id="step2">
+                                <span class="step-num">2</span>
+                                <span class="step-txt" data-i18n="copilot_step2">Legal expert Reasoning</span>
+                            </div>
+                            <div class="step" id="step3">
+                                <span class="step-num">3</span>
+                                <span class="step-txt" data-i18n="copilot_step3">Strategy Synthesis</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="resultGrid" class="result-grid hidden">
+                        <div class="glass-card result-card">
+                            <div class="result-header">
+                                <i data-lucide="scale"></i>
+                                <h4 data-i18n="copilot_legal_title">Legal Analysis</h4>
+                            </div>
+                            <div class="result-body" id="legalText"></div>
+                        </div>
+                        <div class="glass-card result-card highlight">
+                            <div class="result-header">
+                                <i data-lucide="briefcase"></i>
+                                <h4 data-i18n="copilot_sales_title">Business Strategy</h4>
+                            </div>
+                            <div class="result-body" id="strategyText"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Graph Page -->
+            <section id="graph" class="page">
+                <div class="hero-section">
+                    <h2 class="hero-title" data-i18n="graph_hero">Knowledge Graph</h2>
+                    <p class="hero-desc" data-i18n="graph_subtitle">A massive topological map of EU policy connectivity.</p>
+                </div>
+                <div class="graph-viewport glass-card">
+                    <div class="graph-overlay">
+                        <div class="overlay-icon"><i data-lucide="construction"></i></div>
+                        <h3 data-i18n="graph_placeholder_title">Interactive Topology</h3>
+                        <p data-i18n="graph_placeholder_desc">Connect to Neo4j database to explore dynamic relationships.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
