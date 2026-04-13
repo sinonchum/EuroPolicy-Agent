@@ -69,7 +69,5 @@ npm run dev -- --turbo
 
 ## 👤 Author
 **Simon Qin**
-*Specialist in Agentic Workflows & Regulatory Intelligence.*
 
----
 *Disclaimer: EPA is an alpha release. Decisions should be verified with legal experts.*
