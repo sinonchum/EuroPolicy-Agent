@@ -33,6 +33,12 @@ class Neo4jManager:
                 FOR (a:Article) REQUIRE a.article_id IS UNIQUE
             """)
 
+            # 3. 唯一性约束：补贴 ID
+            session.run("""
+                CREATE CONSTRAINT unique_subsidy_id IF NOT EXISTS 
+                FOR (s:Subsidy) REQUIRE s.subsidy_id IS UNIQUE
+            """)
+
             logger.info("✅ Neo4j Schema (约束与索引) 初始化完成。")
 
     def ingest_parsed_document(self, celex_id: str, parsed_data: dict):
@@ -86,7 +92,31 @@ class Neo4jManager:
                     MERGE (d)-[:CONTAINS_OBLIGATION]->(o)
                 """, celex=celex_id, ob_id=ob_id, desc=obli)
                 
-            logger.info(f"✅ 文档 {celex_id} 已成功映射入 Neo4j 知识图谱。")
+            # 步骤 5: 攻击性模块 - 提取财务激励 (Subsidy)
+            subsidies = parsed_data.get("subsidies", [])
+            for idx, sub in enumerate(subsidies):
+                sub_id = f"{celex_id}_Subsidy_{idx}"
+                # 创建补贴节点并关联法规
+                session.run("""
+                    MATCH (d:Directive {celex_id: $celex})
+                    MERGE (s:Subsidy {subsidy_id: $sub_id})
+                    SET s.type = $type, s.amount = $amount, s.description = $desc
+                    MERGE (d)-[:PROVIDES_INCENTIVE]->(s)
+                """, celex=celex_id, sub_id=sub_id, 
+                     type=sub.get("type", "Grant"), 
+                     amount=sub.get("amount", "TBD"), 
+                     desc=sub.get("description", ""))
+                
+                # 关联目标行业
+                target_industries = sub.get("target_industries", ["General"])
+                for industry in target_industries:
+                    session.run("""
+                        MATCH (s:Subsidy {subsidy_id: $sub_id})
+                        MERGE (i:Industry {name: $industry_name})
+                        MERGE (s)-[:TARGETS]->(i)
+                    """, sub_id=sub_id, industry_name=industry)
+                
+            logger.info(f"✅ 文档 {celex_id} 已成功映射入 Neo4j 知识图谱（含财务激励模块）。")
 
 # 实例化样例
 if __name__ == "__main__":

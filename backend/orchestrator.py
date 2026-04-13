@@ -4,6 +4,7 @@ import os
 from data_hub.scrapers.eurlex_scraper import EurLexScraper
 from data_hub.parsers.formex_parser import FormexParser
 from config.neo4j_manager import Neo4jManager
+from reasoning_agents.policy_graph_agent import epa_reasoning_engine
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("EPA-Orchestrator")
@@ -51,6 +52,34 @@ async def main():
         result = session.run("MATCH ()-[r:REFERENCES]->() RETURN count(r) as total_references")
         ref_count = result.single()["total_references"]
         logger.info(f"🎉 当前图谱中已建立的交叉引用（REFERENCES）关系总数: {ref_count}")
+
+    # 步骤 E: 核心进攻模块测试 - 获客雷达 (Opportunity Radar)
+    logger.info("🎯 [Lead Generation Radar] 正在分析 2026 能源销售增长点...")
+    
+    test_query = "欧盟 RED III (32023L2413) 对于 2026 年销售可再生能源制氢设备有哪些具体的补贴和获客机会？"
+    init_state = {
+        "query": test_query, 
+        "graph_context": "", 
+        "legal_analysis": "", 
+        "opportunity_report": "", 
+        "sales_strategy": ""
+    }
+    
+    final_state = None
+    for state_update in epa_reasoning_engine.stream(init_state):
+        final_state = state_update
+        
+    # 获取最后一步的状态
+    result = final_state.get("sales_strategist", {}) if "sales_strategist" in final_state else {}
+    report = final_state.get("opportunity_scout", {}).get("opportunity_report", "N/A")
+    
+    print("\n" + "="*50)
+    print("📢 2026 能源销售增长点报告 (Opportunity Report)")
+    print("="*50)
+    print(report)
+    print("\n💼 最终执行策略:")
+    print(result.get("sales_strategy", "N/A"))
+    print("="*50)
 
     db.close()
     logger.info("集测顺利结束。")

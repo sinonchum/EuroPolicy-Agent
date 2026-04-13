@@ -4,6 +4,7 @@ from langgraph.graph import StateGraph, END
 import os
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
+from reasoning_agents.opportunity_agent import opportunity_agent
 
 logger = logging.getLogger("EPA-Agent-Graph")
 
@@ -14,6 +15,7 @@ class AgentState(TypedDict):
     query: str
     graph_context: str
     legal_analysis: str
+    opportunity_report: str
     sales_strategy: str
 
 # ==========================================
@@ -98,12 +100,14 @@ workflow = StateGraph(AgentState)
 # 添加节点
 workflow.add_node("graph_retriever", graph_retriever)
 workflow.add_node("legal_expert", legal_expert_agent)
+workflow.add_node("opportunity_scout", opportunity_agent)
 workflow.add_node("sales_strategist", sales_strategist_agent)
 
 # 定义节点的流转路径图
 workflow.set_entry_point("graph_retriever")
 workflow.add_edge("graph_retriever", "legal_expert")
-workflow.add_edge("legal_expert", "sales_strategist")
+workflow.add_edge("legal_expert", "opportunity_scout")
+workflow.add_edge("opportunity_scout", "sales_strategist")
 workflow.add_edge("sales_strategist", END)
 
 # 编译为最终引擎

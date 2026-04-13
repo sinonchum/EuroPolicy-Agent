@@ -35,8 +35,19 @@ ENV/
 
 # Project Specific
 data_hub/raw_storage/
+backend/data/
 logs/
 *.log
+
+# Node.js
+node_modules/
+.next/
+out/
+build/
+.env*.local
+
+# OS
+.DS_Store
 
 # Sensitive
 secrets/

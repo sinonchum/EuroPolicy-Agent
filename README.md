@@ -2,103 +2,74 @@
 
 > **Transforming EU Regulatory Complexity into Actionable Business Intelligence.**
 
-[![Alpha Version](https://img.shields.io/badge/Status-Alpha%20v0.8.2-blueviolet?style=for-the-badge)](https://github.com/google-labs-code/stitch-skills)
-[![Tech Stack](https://img.shields.io/badge/Stack-LangGraph%20%7C%20Neo4j%20%7C%20V8-blue?style=for-the-badge)](https://langchain-ai.github.io/langgraph/)
-[![Interface](https://img.shields.io/badge/UI-Google%20Stitch%20Native-orange?style=for-the-badge)](https://stitch.withgoogle.com/)
-
-## 🌟 The Vision
-
-Navigating the **European Union's regulatory landscape** (CBAM, RED III, Battery Regulation, AI Act) is a survival challenge for global exporters. **EuroPolicy-Agent** is an agentic reasoning engine that bridges the gap between massive, multi-lingual legal PDF/XML databases and high-stakes business decisions.
-
-EPA doesn't just search; it **reasons**. By combining a **Knowledge Graph (Neo4j)** of policy topology with **LangGraph-driven agentic workflows**, it extracts specific obligations and synthesizes risk-mitigated sales strategies in seconds.
+Developed by **Simon Qin**, EuroPolicy-Agent (EPA) is a high-performance, AI-driven intelligence terminal designed to help energy companies navigate and capitalize on the chaotic landscape of EU policy changes (e.g., RED III, CBAM).
 
 ---
 
-## 🚀 Key Capabilities
+## 🏛️ Purpose
+The primary goal of EPA is to provide **Aggressive Lead Generation** based on regulatory shifts. It doesn't just "summarize" laws; it calculates ROI, identifies specific subsidy windows, and generates high-authority sales pitches with "Evidence Chain Closure."
 
-### 1. 🧠 Agentic Reasoning (LangGraph)
-A multi-node brain that separates concerns:
-- **Legal Expert Node**: Translates 100-page directives into "Plain Human" obligation lists.
-- **Strategist Node**: Synthesizes contractual clauses, price adjustments, and supply chain pivoting strategies.
+## 🚀 "Zero-Ops" Lightweight Architecture
+Designed for the modern local-first workflow, EPA features a highly RAM-Optimized architecture, running entirely without external database servers.
 
-### 2. 🕸️ Regulatory Knowledge Graph (Neo4j)
-Not just a database, but a map:
-- Tracks `(Directive)-[:HAS_ARTICLE]->(Article)-[:RECITES]->(Standard)`.
-- Follows the amendment timeline: `(Old_Article)-[:SUPERCEDED_BY]->(New_Article)`.
+### Core Stack & Attributions
+EPA is built on the shoulders of these incredible open-source projects:
 
-### 3. 📑 Formex Deep Parser
-Native support for EU **Formex XML** structures. Unlike basic RAG, EPA understands the semantic hierarchy of legal documents—distinguishing between "recitals" and "binding articles."
-
-### 4. 🌐 Multilingual Native Dashboard
-A premium, **Google Stitch-inspired** interface supporting **English, 简体中文, Français, and Deutsch**. Zero-latency page transitions and high-fidelity data visualization.
-
----
-
-## 🏗️ System Architecture
-
-```mermaid
-graph TD
-    A[EUR-Lex Crawler/Scraper] -->|XML/SPARQL| B(Formex Semantic Parser)
-    B -->|Structured Data| C[(Neo4j Policy Graph)]
-    
-    subgraph Reasoning Engine
-        D[Knowledge Retriever] -->|Context| E[Legal Expert LLM]
-        E -->|Obligations| F[Sales Strategist LLM]
-    end
-    
-    C --> D
-    F -->|Actionable Report| G[Native Stitch Dashboard]
-    
-    G -->|Language Switch| H{EN/ZH/FR/DE}
-```
+- **Storage (Zero-Ops Layer)**:
+    - [LanceDB](https://lancedb.com/): Embedded vector database for zero-config semantic search.
+    - [DuckDB](https://duckdb.org/): Analytical database for weights history and episodic memory.
+    - [NetworkX](https://networkx.org/): Lightweight in-memory graph for policy cross-referencing.
+- **Intelligence & Scrapping**:
+    - [Firecrawl](https://www.firecrawl.dev/): Transforming complex web data into LLM-ready Markdown.
+    - [Jina Reader](https://jina.ai/reader/): Lightning-fast URL-to-Markdown conversion.
+    - [Tavily AI](https://tavily.com/): Specialized search for high-signal energy market pulse.
+- **Frontend (Bloomberg Intelligence Style)**:
+    - [Next.js](https://nextjs.org/): Turbo-charged React framework.
+    - [Apache ECharts](https://echarts.apache.org/): High-density financial data visualization.
+    - [Zustand](https://github.com/pmndrs/zustand): Ultra-lean state management.
+    - [Lucide React](https://lucide.dev/): Consistent professional iconography.
+    - [Tailwind CSS](https://tailwindcss.com/): High-impact dark theme aesthetics.
 
 ---
 
-## 🛠️ Getting Started
+## ✨ Key Features
 
-### Prerequisites
-- **Python 3.10+** (Reasoning Engine)
-- **Neo4j Desktop / Aura** (Knowledge Base)
-- **Gemini 1.5 Pro / Flash API Key**
+### 1. Global Energy Market Pulse (GEP)
+Autonomous "hunting" for external news (Market Trends, Policy Shifts) that dynamically adjusts the **Opportunity Score** of internal policy nodes. 
 
-### 1. Installation
+### 2. Evolutionary Memory
+Inspired by **Mem0**, EPA features:
+- **Episodic Memory**: Tracks the last 50 decisions and search results.
+- **Semantic Memory**: Automatically updates entity facts when cleaner intel is discovered.
+
+### 3. Bloomberg-Style Multi-Language UI
+A high-density, mission-critical dashboard supporting **English, Simplified Chinese, French, and German**. Switching languages re-triggers AI-based sales pitch generation synchronized for the target market.
+
+---
+
+## 🛠️ Quick Start
+
+### Backend (FastAPI)
 ```bash
-git clone https://github.com/your-username/EuroPolicy-Agent.git
-cd EuroPolicy-Agent
+cd backend
 pip install -r requirements.txt
+python main.py
 ```
+*Port 8000. Memory target: < 200MB.*
 
-### 2. Launch the Brain (CLI)
+### Frontend (Next.js)
 ```bash
-export GEMINI_API_KEY="your_api_key"
-python reasoning_agents/policy_graph_agent.py
+cd frontend
+npm install
+npm run dev -- --turbo
 ```
-
-### 3. Run the Dashboard
-EPA provides a premium native experience (No Python-UI dependencies required for the frontend):
-```bash
-cd dashboard-native
-python3 -m http.server 8686
-```
-Visit `http://localhost:8686` in your browser.
+*Port 3000. Features Bloomberg Dark theme + i18n.*
 
 ---
 
-## 💎 Design Philosophy
-Built with the **Google Stitch Design System**:
-- **Clarity**: Visual hierarchies that prioritize critical legal risks.
-- **Glassmorphism**: Subtle elevation and depth for a professional dashboard feel.
-- **Flow**: Asynchronous reasoning steps shown to the user for high-trust AI.
+## 👤 Author
+**Simon Qin**
+*Specialist in Agentic Workflows & Regulatory Intelligence.*
 
 ---
-
-## 🗺️ Roadmap
-- [ ] **Phase 1**: Real-time SPARQL integration with EUR-Lex Cellar. (Current)
-- [ ] **Phase 2**: D3.js interactive topology visualization in the Graph Explorer.
-- [ ] **Phase 3**: Multi-agent consensus for cross-jurisdiction (e.g., EU vs. UK) comparison.
-
----
-
-## 📜 License
-MIT License. Created by [Your Name/Org]. 
-*Disclaimer: EuroPolicy-Agent provides business intelligence, not legal advice.*
+*Disclaimer: EPA is an alpha release. Decisions should be verified with legal experts.*
