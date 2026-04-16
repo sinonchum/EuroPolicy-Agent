@@ -2,162 +2,97 @@
 
 > **Transforming EU Regulatory Complexity into Actionable Business Intelligence.**
 
-Developed by **Simon Qin**, EuroPolicy-Agent (EPA) is a high-performance, AI-driven intelligence terminal designed to help energy companies navigate and capitalize on the chaotic landscape of EU policy changes (e.g., RED III, CBAM).
+Developed by **Simon Qin**, EPA is an AI-driven intelligence terminal that helps energy companies navigate EU policy changes (RED III, CBAM) and convert regulatory shifts into concrete sales opportunities.
 
 ---
 
-## 🏛️ Purpose
-The primary goal of EPA is to provide **Aggressive Lead Generation** based on regulatory shifts. It doesn't just "summarize" laws; it calculates ROI, identifies specific subsidy windows, and generates high-authority sales pitches with "Evidence Chain Closure."
+## 🏛️ What It Does
 
-## 🚀 "Zero-Ops" Lightweight Architecture
-Designed for the modern local-first workflow, EPA features a highly RAM-Optimized architecture, running entirely without external database servers.
+EPA doesn't just summarize laws. It:
 
-### Core Stack & Attributions
-EPA is built on the shoulders of these incredible open-source projects:
-
-- **Storage (Zero-Ops Layer)**:
-    - [LanceDB](https://lancedb.com/): Embedded vector database for zero-config semantic search.
-    - [DuckDB](https://duckdb.org/): Analytical database for weights history and episodic memory.
-    - [NetworkX](https://networkx.org/): Lightweight in-memory graph for policy cross-referencing.
-- **Intelligence & Scrapping**:
-    - [Scrapling](https://scrapling.readthedocs.io/): Adaptive web scraping framework with anti-bot bypass (Cloudflare Turnstile), stealth browsing, and JavaScript rendering. **Now replaces Firecrawl for better reliability and cost efficiency.**
-    - [Jina Reader](https://jina.ai/reader/): Lightning-fast URL-to-Markdown conversion.
-    - [Tavily AI](https://tavily.com/): Specialized search for high-signal energy market pulse.
-- **Frontend (Bloomberg Intelligence Style)**:
-    - [Next.js](https://nextjs.org/): Turbo-charged React framework.
-    - [Apache ECharts](https://echarts.apache.org/): High-density financial data visualization.
-    - [Zustand](https://github.com/pmndrs/zustand): Ultra-lean state management.
-    - [Lucide React](https://lucide.dev/): Consistent professional iconography.
-    - [Tailwind CSS](https://tailwindcss.com/): High-impact dark theme aesthetics.
+- **Scrapes** EU regulatory sources (Eur-Lex, EC energy pages) in real time
+- **Reasons** through a multi-agent pipeline: legal analysis → opportunity extraction → sales strategy generation
+- **Scores** opportunities with urgency ratings and financial impact estimates
+- **Generates** evidence-backed sales pitches ("According to [Regulation] Art. [X], failure to act by [date] risks [amount]...")
+- **Adapts** across 4 languages (EN, ZH, FR, DE) with market-specific output
 
 ---
 
-## ✨ Key Features
+## 🚀 Architecture
 
-### 1. Global Energy Market Pulse (GEP)
-Autonomous "hunting" for external news (Market Trends, Policy Shifts) that dynamically adjusts the **Opportunity Score** of internal policy nodes.
-
-### 2. Evolutionary Memory
-Inspired by **Mem0**, EPA features:
-- **Episodic Memory**: Tracks the last 50 decisions and search results.
-- **Semantic Memory**: Automatically updates entity facts when cleaner intel is discovered.
-
-### 3. Bloomberg-Style Multi-Language UI
-A high-density, mission-critical dashboard supporting **English, Simplified Chinese, French, and German**. Switching languages re-triggers AI-based sales pitch generation synchronized for the target market.
-
-### 4. Advanced Web Scraping with Scrapling
-EPA now uses **Scrapling** for web scraping, providing:
-- **Anti-bot bypass**: Automatically handles Cloudflare Turnstile and other protections
-- **Stealth browsing**: Undetectable scraping with realistic browser fingerprints
-- **JavaScript rendering**: Full support for modern web applications
-- **Concurrent crawling**: Spider framework for large-scale data collection
-- **Adaptive parsing**: Automatically adapts to website changes
+```
+┌──────────────────────────────────────────────────┐
+│  Frontend (Next.js)  │  Backend (FastAPI)        │
+│  • Bloomberg Dark UI │  • LangGraph Agent Chain  │
+│  • ECharts Radars    │  • Web Scraping (Scrapling)│
+│  • i18n (4 langs)    │  • Evolutionary Memory    │
+│  • Zustand Store     │  • Pulse Processor        │
+├──────────────────────┴───────────────────────────┤
+│  Storage: LanceDB + DuckDB + NetworkX            │
+│  (Zero external DB servers required)             │
+└──────────────────────────────────────────────────┘
+```
 
 ---
 
-## 🛠️ Quick Start
+## ⚡ Quick Start
 
-### Backend (FastAPI)
+### Backend
+
 ```bash
 cd backend
 pip install -r requirements.txt
-python main.py
+scrapling install --force   # browser deps for web scraping
+python main.py              # → http://localhost:8000
 ```
-*Port 8000. Memory target: < 200MB.*
 
-### Frontend (Next.js)
+### Frontend
+
 ```bash
 cd frontend
 npm install
-npm run dev -- --turbo
+npm run dev -- --turbo      # → http://localhost:3000
 ```
-*Port 3000. Features Bloomberg Dark theme + i18n.*
 
----
+### Configuration
 
-## 🔧 Configuration
-
-### Environment Variables
-Create a `.env` file in the backend directory with the following variables:
+Create `backend/.env`:
 
 ```env
-# Required: Google Gemini API Key for AI reasoning
-GOOGLE_API_KEY=your_google_api_key_here
-
-# Optional: Tavily AI for enhanced web search
-TAVILY_API_KEY=your_tavily_api_key_here
-
-# Optional: Jina Reader for URL-to-Markdown conversion
-JINA_API_KEY=your_jina_api_key_here
-
-# Optional: Custom model configuration
-# GOOGLE_MODEL=gemini-pro
-# GOOGLE_EMBEDDING_MODEL=embedding-001
-
-# Optional: Scrapling configuration
-# SCRAPLING_TIMEOUT=30
-# SCRAPLING_HEADLESS=true
-
-# Optional: Application settings
-# LOG_LEVEL=INFO
-# MAX_MEMORY_MB=200
-```
-
-A template is provided in `backend/.env.example`.
-
-### Scrapling Setup
-Scrapling requires browser dependencies. After installing requirements:
-
-```bash
-# Install browser dependencies
-scrapling install --force
-```
-
-This will download Chromium, Firefox, and WebKit browsers for stealth scraping.
-
----
-
-## 📊 Architecture Overview
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    EuroPolicy-Agent (EPA)                   │
-├─────────────────────────────────────────────────────────────┤
-│  Frontend (Next.js)  │  Backend (FastAPI)  │  Data Layer    │
-│  • Bloomberg UI      │  • LangGraph Agent  │  • LanceDB     │
-│  • ECharts           │  • Web Scout        │  • DuckDB      │
-│  • Zustand           │  • Pulse Processor  │  • NetworkX    │
-│  • i18n (4 langs)    │  • Memory Core      │  • Scrapling   │
-└─────────────────────────────────────────────────────────────┘
+GOOGLE_API_KEY=your_key       # Required: Google Gemini API key
+TAVILY_API_KEY=your_key       # Optional: enhanced web search
+JINA_API_KEY=your_key         # Optional: URL-to-Markdown
 ```
 
 ---
 
-## 🚀 Recent Updates
+## 🧠 Agent Pipeline
 
-### v2.0 - Scrapling Integration (Latest)
-- **Replaced Firecrawl with Scrapling** for better web scraping capabilities
-- Added anti-bot bypass for Cloudflare-protected sites
-- Implemented stealth browsing and JavaScript rendering
-- Improved error handling and fallback mechanisms
-- Enhanced content extraction with AI-optimized parsing
+Each query flows through 4 reasoning nodes:
 
-### v1.0 - Initial Release
-- LangGraph-powered reasoning engine
-- Multi-language support (EN, ZH, FR, DE)
-- Evolutionary memory system
-- Bloomberg-style dark theme UI
+1. **Graph Retriever** — pulls relevant policy context from the knowledge graph
+2. **Legal Expert** — translates dense regulation text into clear compliance obligations
+3. **Opportunity Scout** — identifies subsidy windows, financial incentives, and urgency scores
+4. **Sales Strategist** — generates contract-ready sales strategies and pricing adjustments
 
 ---
 
-## 👤 Author
-**Simon Qin**
+## 📡 Key APIs
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/v1/opportunities` | GET | Run the full reasoning pipeline. Params: `lang`, `geo`, `sector`, `query` |
+| `/api/v1/sync-global-pulse` | POST | Trigger background news sync + evolution cycle |
+| `/api/v1/status` | GET | System health and memory usage |
+| `/api/v1/agent-evolution-status` | GET | Evolutionary memory stats |
+| `/api/v1/debug/pipeline` | GET | Raw pipeline output for debugging |
 
 ---
 
-## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## ⚠️ Alpha Release
+
+EPA is under active development. Regulatory interpretations should be verified with legal experts before making business decisions.
 
 ---
 
-*Disclaimer: EPA is an alpha release. Decisions should be verified with legal experts.*
+**Author:** Simon Qin | **License:** MIT
