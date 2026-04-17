@@ -40,7 +40,7 @@ def opportunity_agent(state: dict) -> dict:
         llm = ChatGoogleGenerativeAI(
             model="gemini-1.5-flash", 
             max_retries=0, 
-            google_api_key=os.getenv("GEMINI_API_KEY")
+            google_api_key=os.getenv("GOOGLE_API_KEY")
         )
         messages = [
             SystemMessage(content=system_prompt),

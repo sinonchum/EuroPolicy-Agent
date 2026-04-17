@@ -18,7 +18,8 @@ class EvolutionaryMemory:
         self._init_duck()
 
         # 2. Semantic Memory (LanceDB) - 长期经验
-        self.lance_path = "backend/data/lancedb_store"
+        self.lance_path = os.path.join(base_dir, "data", "lancedb_store")
+        os.makedirs(self.lance_path, exist_ok=True)
         self.lance_db = lancedb.connect(self.lance_path)
         
     def _init_duck(self):

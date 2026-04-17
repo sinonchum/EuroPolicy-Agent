@@ -36,6 +36,9 @@ ENV/
 # Project Specific
 data_hub/raw_storage/
 backend/data/
+backend/**/data/
+*.db
+*.db.wal
 logs/
 *.log
 
