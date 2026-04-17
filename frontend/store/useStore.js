@@ -4,6 +4,9 @@ import { create } from 'zustand';
  * EPA Global State - RAM Optimized
  * 采用 Zustand 最小化组件重绘开销
  */
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 const useStore = create((set, get) => ({
   language: 'en',
   opportunities: [],
@@ -21,7 +24,7 @@ const useStore = create((set, get) => ({
   
   fetchEvolution: async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/agent-evolution-status`);
+      const res = await fetch(`${API_BASE}/api/v1/agent-evolution-status`);
       const data = await res.json();
       set({ evolutionData: data });
     } catch (err) {
@@ -32,7 +35,7 @@ const useStore = create((set, get) => ({
   fetchData: async (lang) => {
     set({ isLoading: true });
     const { selectedCountry } = get();
-    const url = new URL(`http://localhost:8000/api/v1/opportunities`);
+    const url = new URL(`${API_BASE}/api/v1/opportunities`);
     url.searchParams.append("lang", lang);
     if (selectedCountry) url.searchParams.append("geo", selectedCountry);
     

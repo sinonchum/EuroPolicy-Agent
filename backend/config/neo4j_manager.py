@@ -6,10 +6,11 @@ logger = logging.getLogger("EPA-Neo4j")
 
 class Neo4jManager:
     def __init__(self):
-        # 2026年生产环境最佳实践:通过环境变量读取配置
         self.uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
         self.user = os.getenv("NEO4J_USER", "neo4j")
-        self.password = os.getenv("NEO4J_PASSWORD", "password")
+        self.password = os.getenv("NEO4J_PASSWORD")
+        if not self.password:
+            raise ValueError("NEO4J_PASSWORD environment variable is required")
         self.driver = GraphDatabase.driver(self.uri, auth=(self.user, self.password))
 
     def close(self):

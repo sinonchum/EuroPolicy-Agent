@@ -49,7 +49,7 @@ def legal_expert_agent(state: AgentState) -> AgentState:
     
     try:
         # 真实 LLM 调用 (设置 max_retries=0)
-        llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", max_retries=0, google_api_key=os.getenv("GEMINI_API_KEY"))
+        llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", max_retries=0, google_api_key=os.getenv("GOOGLE_API_KEY"))
         messages = [
             SystemMessage(content=system_prompt),
             HumanMessage(content=f"用户提问：{state.get('query')}\\n\\n图谱检索到的法条上下文：\\n{state.get('graph_context')}")
@@ -78,7 +78,7 @@ def sales_strategist_agent(state: AgentState) -> AgentState:
     
     try:
         # 真实 LLM 调用 (设置 max_retries=0)
-        llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", max_retries=0, google_api_key=os.getenv("GEMINI_API_KEY"))
+        llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", max_retries=0, google_api_key=os.getenv("GOOGLE_API_KEY"))
         messages = [
             SystemMessage(content=system_prompt),
             HumanMessage(content=f"这是法律专家的合规义务分析：\\n{state.get('legal_analysis')}\\n\\n基于此，请生成面向欧盟客户的具体销售风控策略。")

@@ -37,9 +37,12 @@ logger = logging.getLogger("EPA-Unified-Backend")
 
 app = FastAPI(title="EuroPolicy Agent (Evolving & Optimized)", version="3.0.0")
 
+# CORS 配置: 开发环境默认允许 localhost, 生产环境通过 CORS_ORIGINS 环境变量配置
+cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:3001").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -177,11 +180,6 @@ def normalize_opportunity(raw: dict, opp_id: str, lang: str) -> dict:
     }
 
 
-@app.middleware("http")
-async def memory_management_middleware(request, call_next):
-    response = await call_next(request)
-    gc.collect()
-    return response
 
 @app.get("/api/v1/status")
 async def get_status():
